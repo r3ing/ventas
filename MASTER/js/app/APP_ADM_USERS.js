@@ -53,9 +53,9 @@ function selectPermits(){
 
 function add_app_usuarios(id)
 {
-    valida_formulario_app_usuarios()
+    valida_formulario_app_usuarios(id)
     user 				=	 document.getElementById('user').value
-    //pass				=	 document.getElementById('pass').value
+    pass				=	 document.getElementById('pass').value
     forename			=	 document.getElementById('forename').value
 	paternal 			=	 document.getElementById('paternal').value
 	maternal 			=	 document.getElementById('maternal').value
@@ -63,13 +63,12 @@ function add_app_usuarios(id)
 	permits			 	=	 document.getElementById('permits').value
 	email	 			=	 document.getElementById('email').value
     status 				=	 document.getElementById('status').value
-    sucursal            =    document.getElementById('sucursal').value
 
-    variables = 'user='+user+'&forename='+forename+'&paternal='+paternal+'&maternal='+maternal+'&cellphone='+encodeURIComponent(cellphone)+'&permits='+permits+'&sucursal='+sucursal+'&email='+email+'&status='+status+'&id='+id
+    variables = 'user='+user+'&pass='+pass+'&forename='+forename+'&paternal='+paternal+'&maternal='+maternal+'&cellphone='+encodeURIComponent(cellphone)+'&permits='+permits+'&email='+email+'&status='+status+'&id='+id
     return variables;
 }
 
-function valida_formulario_app_usuarios ()
+function valida_formulario_app_usuarios (id)
 { 
 	if (document.getElementById('user').value == '')
     { 
@@ -84,15 +83,16 @@ function valida_formulario_app_usuarios ()
             $('#msgUser').fadeIn(1000).html("&nbsp;");
     }
 
-    /*
-	if (document.getElementById('pass').value == '')
-    {
-		$('#msgPass').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese Contrase&ntilde;a.</span>"); 
-        global_app_usuarios = true
+
+    if(id == 0) {
+        if (document.getElementById('pass').value == '') {
+            $('#msgPass').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese Contrase&ntilde;a.</span>");
+            global_app_usuarios = true
+        }
+        else
+            $('#msgPass').fadeIn(1000).html("&nbsp;");
     }
-	else 
-		$('#msgPass').fadeIn(1000).html("&nbsp;");
-    */
+
 	
 	if (document.getElementById('forename').value == '')
     {
@@ -155,11 +155,6 @@ function valida_formulario_app_usuarios ()
 	else 
 		$('#msgPermits').fadeIn(1000).html("&nbsp;");
 
-    if(document.getElementById('sucursal').value == 0 && document.getElementById('permits').value != 3){
-        $('#msgSucursal').fadeIn(1000).html("<span style='color:#FF0000;'>Seleccione Sucursal.</span>");
-        global_app_usuarios = true
-    }else
-        $('#msgSucursal').fadeIn(1000).html("&nbsp;");
 
     if (document.getElementById('email').value == '')
     {

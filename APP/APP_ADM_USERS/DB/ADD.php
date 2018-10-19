@@ -18,13 +18,11 @@
 					<div class="col-md-6"><input name="user" id="user" type="text" maxlength="50" class="form-control"></div>
 					<div class="col-md-3"><div id="msgUser">&nbsp;</div></div>
 				</div>
-				<!--
 				<div class="form-group">
 					<label class="col-md-3 control-label">Contrase&ntilde;a</label>
 					<div class="col-md-6"><input name="pass" id="pass" type="password" maxlength="50" class="form-control"></div>
 					<div class="col-md-3"><div id="msgPass">&nbsp;</div></div>
 				</div>
-				-->
 				<div class="form-group">
 					<label class="col-md-3 control-label">Nombre</label>
 					<div class="col-md-6"><input name="forename" id="forename" type="text" maxlength="50" class="form-control"></div>
@@ -48,7 +46,7 @@
 				<div class="form-group">
 					<label class="col-md-3 control-label">Permisos</label>
 					<div class="col-md-6">
-						<select name="permits" id="permits" class="form-control" onchange="selectPermits();">
+						<select name="permits" id="permits" class="form-control">
 							<option value="0">Seleccionar Opci&oacute;n</option>
 							<option value="1">Usuario B&aacute;sico</option>
 							<!--<option value="2">2 - Usuario Medio</option>-->
@@ -57,27 +55,6 @@
 					</div>
 					<div class="col-md-3"><div id="msgPermits">&nbsp;</div></div>
 				</div>
-				<div class="form-group" id="selectSucursal" hidden>
-					<label class="col-md-3 control-label">Sucursal</label>
-					<div class="col-md-6">
-							<select name="sucursal" id="sucursal" class="form-control" required>
-								<option value="0">Seleccione Sucursal</option>
-								<?php
-								include('../../../MASTER/config/conect.php');
-								$SQL="SELECT * FROM RIPLEY.sucursales";
-								$conect_vertica->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-								$CONS = $conect_vertica->prepare($SQL);
-								$CONS->execute();
-								while ($row = $CONS->fetch()) {
-									?>
-									<option value="<?php echo $row[0]; ?>"><?php echo utf8_encode($row[1]); ?></option>
-									<?php
-								}
-								?>
-							</select>
-						</div>
-						<div class="col-md-3"><div id="msgSucursal">&nbsp;</div></div>
-					</div>
 				<div class="form-group">
 					<label class="col-md-3 control-label">E-mail</label>
 					<div class="col-md-6"><input name="email" id="email" type="text" maxlength="50" class="form-control"></div>

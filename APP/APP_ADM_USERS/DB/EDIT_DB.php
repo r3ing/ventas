@@ -16,7 +16,10 @@ include('../../../MASTER/include/verifyAPP.php');
 				{        
 					$id 				= 	$_POST['id'];
 					$user	 			= 	$_POST['user'];
-					$pass	 			= 	'000';//$_POST['pass'];
+					if(!empty(trim($_POST['pass'])))
+					{
+						$pass	 			= 	password_hash(trim($_POST['pass']), PASSWORD_DEFAULT);
+					}
 					$forename 			= 	$_POST['forename'];
 					$paternal			= 	$_POST['paternal'];
 					$maternal 			= 	$_POST['maternal'];
@@ -24,18 +27,28 @@ include('../../../MASTER/include/verifyAPP.php');
 					$permits			= 	$_POST['permits'];
 					$email				= 	$_POST['email'];
 					$status				=   $_POST['status'];
-					$sucrsal            =    $_POST['sucursal'];
-					
-					$sql = "UPDATE users SET 	user			=	'".trim($user)."',
-												pass 			=	'".utf8_decode($pass)."',
+
+					if(empty($pass)){
+						$sql = "UPDATE users SET 	user			=	'".trim($user)."',
 												forename		= 	'".trim($forename)."',
 												paternal		= 	'".trim($paternal)."',
 												maternal		=	'".trim($maternal)."',
 												cellphone		=	'".$cellphone."',
 												permits			=	'".utf8_decode($permits)."',
 												email			= 	'".utf8_decode($email)."',
-												status			= 	'".utf8_decode($status)."',
-												cod_sucursal    =   '".utf8_decode($sucrsal)."' ";
+												status			= 	'".utf8_decode($status)."' ";
+					}else{
+						$sql = "UPDATE users SET 	user			=	'".trim($user)."',
+												pass 			=	'".$pass."',
+												forename		= 	'".trim($forename)."',
+												paternal		= 	'".trim($paternal)."',
+												maternal		=	'".trim($maternal)."',
+												cellphone		=	'".$cellphone."',
+												permits			=	'".utf8_decode($permits)."',
+												email			= 	'".utf8_decode($email)."',
+												status			= 	'".utf8_decode($status)."' ";
+					}
+
 					$sql = $sql."WHERE id = ".$id;
 					
 					include('../../../MASTER/config/conect.php');  

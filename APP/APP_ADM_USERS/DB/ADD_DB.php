@@ -10,12 +10,12 @@ include('../../../MASTER/include/verifyAPP.php');
             </span>
         </div>
     </div>
-	<div class="portlet-body">	
+	<div class="portlet-body">
 		<?php  
 			if(isset($_POST['user']))
 			{   
 				$user	 			=	 $_POST['user'];
-				$pass	 			=	 '000';//$_POST['pass'];
+				$pass	 			=	 password_hash(trim($_POST['pass']), PASSWORD_DEFAULT);
 				$forename 			=	 $_POST['forename'];
 				$paternal			= 	 $_POST['paternal'];
 				$maternal			= 	 $_POST['maternal'];
@@ -23,7 +23,6 @@ include('../../../MASTER/include/verifyAPP.php');
 				$permits			=	 $_POST['permits'];
 				$email				=	 $_POST['email'];
 				$status				=	 $_POST['status'];
-				$sucrsal            =    $_POST['sucursal'];
 				
 				include('../../../MASTER/config/conect.php');  
 				$sql =  "INSERT INTO users(user,
@@ -34,8 +33,7 @@ include('../../../MASTER/include/verifyAPP.php');
 										  cellphone,
 										  permits,
 										  email,
-										  status,
-										  cod_sucursal
+										  status
 										 )";
 				$sql = $sql."VALUES ('".utf8_decode($user)."',
 									 '".utf8_decode($pass)."',
@@ -45,12 +43,11 @@ include('../../../MASTER/include/verifyAPP.php');
 									 '".$cellphone."',
 									 '".utf8_decode($permits)."',
 									 '".utf8_decode($email)."',
-									 '".utf8_decode($status)."',
-									 '".utf8_decode($sucrsal)."'
+									 '".utf8_decode($status)."'
 									 )";
 				$link->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION ); 
 				$consulta = $link->prepare($sql); 
-				$consulta->execute(); 
+				$consulta->execute();
 				$link=null;
 				$consulta=null;
 				

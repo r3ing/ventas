@@ -13,7 +13,7 @@ if(isset($_POST['id']))
     while ($row = $consulta->fetch()) 
     {
 		$user				=	utf8_encode($row[1]);        
-        //$pass				=	utf8_encode($row[2]);
+        $pass				=	$row[2];
 		$forename			= 	$row[3];
 		$paternal			= 	$row[4];
         $maternal 			= 	$row[5];
@@ -21,7 +21,6 @@ if(isset($_POST['id']))
 		$permits			= 	utf8_encode($row[7]);
 		$email				= 	utf8_encode($row[8]);
 		$status				= 	utf8_encode($row[9]);
-		$sucursal			= 	utf8_encode($row[11]);
     }
     $consulta=null;
     $link = null;
@@ -70,15 +69,13 @@ if(isset($_POST['id']))
 					</div>
 					<div class="col-md-3"><div id="msgUser">&nbsp;</div></div>
 				</div>
-				<!--
 				<div class="form-group">
 					<label class="col-md-3 control-label">Contrase&ntilde;a</label>
 					<div class="col-md-6">
-						<input name="pass" id="pass" type="password" maxlength="50" class="form-control" value="<?php echo $pass; ?>">
+						<input name="pass" id="pass" type="password" maxlength="50" class="form-control" value="">
 					</div>
 					<div class="col-md-3"><div id="msgPass">&nbsp;</div></div>
 				</div>
-				 -->
 				<div class="form-group">
 					<label class="col-md-3 control-label">Nombre</label>
 					<div class="col-md-6">
@@ -111,7 +108,7 @@ if(isset($_POST['id']))
 					<label class="col-md-3 control-label">Permisos</label>
 					<div class="col-md-6">
 						<?php echo '
-							<select name="permits" id="permits" class="form-control" onchange="selectPermits();">
+							<select name="permits" id="permits" class="form-control">
 								<option value="1" '.$sal[1].'>Usuario B&aacute;sico</option>
 								<!--<option value="2" '.$sal[2].'>Usuario Medio</option>-->
 								<option value="3" '.$sal[3].'>Administrador</option>
@@ -121,65 +118,6 @@ if(isset($_POST['id']))
 					</div>
 					<div class="col-md-3"><div id="msgPermits">&nbsp;</div></div>
 				</div>
-				<?php
-				if($permits != 3){
-				?>
-					<div class="form-group" id="selectSucursal">
-						<label class="col-md-3 control-label">Sucursal</label>
-						<div class="col-md-6">
-							<select name="sucursal" id="sucursal" class="form-control" required>
-								<option value="0">Seleccione Sucursal</option>
-								<?php
-									include('../../../MASTER/config/conect.php');
-									$SQL="SELECT * FROM RIPLEY.sucursales";
-									$conect_vertica->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-									$CONS = $conect_vertica->prepare($SQL);
-									$CONS->execute();
-									while ($row = $CONS->fetch()) {
-										if($row[0] == $sucursal){
-											echo "<option selected value='".$row[0]."'>".utf8_encode($row[1])."</option>";
-										}
-										else{
-											echo "<option value='".$row[0]."'>".utf8_encode($row[1])."</option>";
-										}
-									}
-								?>
-							</select>
-						</div>
-						<div class="col-md-3"><div id="msgSucursal">&nbsp;</div></div>
-					</div>
-
-				<?php
-				}else{
-				?>
-					<div class="form-group" id="selectSucursal" hidden>
-						<label class="col-md-3 control-label">Sucursal</label>
-						<div class="col-md-6">
-							<select name="sucursal" id="sucursal" class="form-control" required>
-								<option value="0">Seleccione Sucursal</option>
-								<?php
-								include('../../../MASTER/config/conect.php');
-								$SQL="SELECT * FROM RIPLEY.sucursales";
-								$conect_vertica->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-								$CONS = $conect_vertica->prepare($SQL);
-								$CONS->execute();
-								while ($row = $CONS->fetch()) {
-									if($row[0] == $sucursal){
-										echo "<option selected value='".$row[0]."'>".utf8_encode($row[1])."</option>";
-									}
-									else{
-										echo "<option value='".$row[0]."'>".utf8_encode($row[1])."</option>";
-									}
-								}
-								?>
-							</select>
-						</div>
-						<div class="col-md-3"><div id="msgSucursal">&nbsp;</div></div>
-					</div>
-				<?php
-				}
-				?>
-
 				<div class="form-group">
 					<label class="col-md-3 control-label">E-mail</label>
 					<div class="col-md-6">

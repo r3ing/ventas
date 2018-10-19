@@ -1,67 +1,45 @@
 <?php
-    include('../../../MASTER/include/verifyAPP.php');
-    include('../../../MASTER/config/conect.php');
-    require '../../PLUGINS/PHPExcel/PHPExcel/IOFactory.php';
-
-    $target_dir = '../../../MASTER/uploads/';
-
-    if ($_FILES['file']['error'] == 0) {
-        $allowed = array('xls','xlsx');
-        $ext = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-        if(in_array($ext,$allowed)){
-            $target_file = $target_dir . utf8_decode(basename($_FILES["file"]["name"]));
-        }else{
-            unset($target_file);
-            echo 3;//extension incorrecta
-        }
-    }else{
-        unset($target_file);
-        echo 0;//error al cargar el archivo
-    }
-
-    if ($target_file) {
-        if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-            $uploads = true;
-        } else {
-            $uploads = false;
-        }
-    }
-
-    if($uploads){
-
-        $objExcel = PHPExcel_IOFactory::load($target_file);
-        $objExcel->setActiveSheetIndex(0);
-        $numRows = $objExcel->setActiveSheetIndex(0)->getHighestRow();
-
-        $sql = "TRUNCATE TABLE ranking;";
-
-        for($i = 2; $i<=$numRows; $i++){
-            $rut = $objExcel->getActiveSheet()->getCell('A'.$i)->getCalculatedValue();
-            $nombre = $objExcel->getActiveSheet()->getCell('B'.$i)->getCalculatedValue();
-            $sku = $objExcel->getActiveSheet()->getCell('C'.$i)->getCalculatedValue();
-            $descripcion = $objExcel->getActiveSheet()->getCell('D'.$i)->getCalculatedValue();
-            $ranking_ns = $objExcel->getActiveSheet()->getCell('E'.$i)->getCalculatedValue();
-
-            $sql = $sql . 'INSERT INTO ranking(rut, nombre, sku, descripcion, ranking_ns) VALUES("'.$rut.'", "'.$nombre.'", "'.$sku.'", "'.$descripcion.'", "'.$ranking_ns.'");';
-        }
-
-        $link->beginTransaction();
-
-        try{
-            $link->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-            $result = $link->prepare($sql);
-            $result->execute();
-            $link->commit();
-            echo 1; //ok
-        }catch (PDOException $Exception){
-            //echo "Error... ".$Exception->getMessage();
-            $link->rollBack();
-            echo 2;//problemacon la db
-        }
-
-    }else{
-        echo 0;//error al cargar el archivo
-    }
-
-
+include('../../../MASTER/include/verifyAPP.php');  
 ?>
+<div class="portlet light bordered">
+	<div class="portlet-body">	
+		<?php  
+			if(isset($_POST['cod_sucursal']))
+			{   
+				$cod	 			=	 $_POST['cod_sucursal'];
+				$sucursal 			=	 $_POST['sucursal'];
+
+				include('../../../MASTER/config/conect.php');
+				$sql =  "INSERT INTO sucursales(cod_sucursal,sucursal)";
+				$sql = $sql."VALUES ('".trim($cod)."', '".trim($sucursal)."')";
+				$link->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION ); 
+				$consulta = $link->prepare($sql); 
+				$consulta->execute();
+				
+				echo '<div class="note note-success">';
+					echo '<h4 class="block">Datos ingresados con &eacute;xito!</h4>';
+					echo '<p>';
+						 echo 'Registro ingresado exitosamente.';
+					echo '</p>';
+				echo '</div>'; 
+				
+				echo "<a onclick=\"_cancel()\" class=\"btn default\">
+						<span>Volver</span>
+					  </a>";
+			}
+			else
+			{
+				echo '<div class="note note-danger">';
+					echo '<h4 class="block">Error! Problemas de Comunicaci&oacute;n</h4>';
+					echo '<p>';
+						echo 'El registro no ha podido ser ingresado.';
+					echo '</p>';
+				echo '</div>';
+				echo "<a onclick=\"_cancel()\" class=\"btn default\">
+						<span>Volver</span>
+					  </a>";
+				exit();
+			}
+		?> 
+	</div>
+</div> 

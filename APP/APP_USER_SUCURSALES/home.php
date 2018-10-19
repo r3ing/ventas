@@ -1,24 +1,26 @@
 <?php
 include('../../MASTER/include/verifyAPP.php');
 
-$ID_US	= $vari[0];
+$ID_US = $vari[0];
 
-$name_application 	= $_GET['name_application'];
-$tipo 				= $_GET['tipo'];
-$descripcion        = $_GET['descripcion'];
+$name_application = $_GET['name_application'];
+$tipo = $_GET['tipo'];
+$descripcion = $_GET['descripcion'];
 ?>
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
-<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]>
+<html lang="en" class="ie9 no-js"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
 <!--<![endif]-->
 <!-- BEGIN HEAD -->
 
-<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
 <head>
     <?php
-    include ("../HEAD.php");
+    include("../HEAD.php");
     ?>
 </head>
 <!-- END HEAD -->
@@ -30,21 +32,25 @@ $descripcion        = $_GET['descripcion'];
         <!-- BEGIN SAMPLE TABLE PORTLET-->
         <h3 class="page-title">
             <?php
-            if(trim($tipo) == 'ADM')	echo 'MANTENEDOR - ';
-            else 				echo '';
+            if (trim($tipo) == 'ADM') echo 'MANTENEDOR - ';
+            else                echo '';
 
-            if ($descripcion != '')	echo $descripcion;
-            else 							echo '';
+            if ($descripcion != '') echo $descripcion;
+            else                            echo '';
             ?>
             <small>...</small>
         </h3>
         <!-- *********************************************** BEGIN CONTENIDO *********************************************** -->
+        <div id="options">
+            <a onclick="showForms('DB/ADD.php', 1, 0)" class='btn btn-circle btn-default'><i class='icon-plus'></i> Agregar Sucursal</a><br>
+        </div>
         </br>
         <div id="result" hidden>
         </div>
-        <div id="loading" hidden  width="100%" align="center">
+        <div id="loading" hidden width="100%" align="center">
             </br></br></br>
             <img src="../../MASTER/images/loaders/loader10.gif" width="3%" class="img-responsive center-block">
+
             <h3> Cargando Informaci&oacute;n ... </h3>
         </div>
 
@@ -52,22 +58,12 @@ $descripcion        = $_GET['descripcion'];
     </div>
 </div>
 
-<button onclick="topscroll()">OKOK</button>
-
 <?php
-include ("../FOOTER.php");
+include("../FOOTER.php");
 ?>
 <script language="javascript" src="../TEMPLATES/JS/UtilsAjax.js"></script>
 <script language="javascript" src="../../MASTER/js/validations.js"></script>
 <script language="javascript" src="app_user_sucursales.js"></script>
 
-<script>
-    topscroll(){
-        //var d = $("#result");
-        window.scrollTo(0, 0);
-        //d.scrollTop(d[0].scrollHeight);
-
-    }
-</script>
 </body>
 </html>

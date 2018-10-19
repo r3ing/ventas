@@ -22,7 +22,7 @@
         echo '<div class="table-scrollable">';
         echo '<table class="table table-bordered table-hover">';
         echo '<thead>';
-        echo '<tr  class="info">';
+        echo '<tr  class="info">' ;
         echo '<th>ID</th>';
         echo '<th>Nombre</th>';
         echo '<th>E-mail</th>';

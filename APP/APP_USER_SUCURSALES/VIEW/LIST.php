@@ -70,8 +70,6 @@
 							            </a>
 						              </td>";
                 echo "</tr>";
-
-                //echo "onclick=\"delete(" . $row[0] . ")\""
             }
             ?>
             </tbody>
