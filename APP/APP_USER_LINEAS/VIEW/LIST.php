@@ -32,7 +32,7 @@
 <div class="portlet box blue col-md-12">
     <div class="portlet-title">
         <div class="caption">
-            <i class="fa fa-table"></i>Listado Lineas</div>
+            <i class="fa fa-table"></i>Listado L&iacute;neas</div>
     </div>
     <div class="portlet-body">
         <br><br><br>
@@ -41,6 +41,7 @@
             <tr>
                 <th> Cod. L&iacute;nea</th>
                 <th> L&iacute;nea </th>
+                <th> Sucursal </th>
                 <th class="notReport"></th>
                 <th class="notReport"></th>
             </tr>
@@ -50,7 +51,7 @@
 
             include('../../../MASTER/config/conect.php');
 
-            $sql = "SELECT * FROM lineas";
+            $sql = "SELECT cod_linea, linea, t2.sucursal FROM lineas t1 LEFT JOIN sucursales t2 ON t2.cod_sucursal = t1.sucursal";
 
             $link->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
             $result = $link->prepare($sql);
@@ -58,7 +59,8 @@
             while ($row = $result->fetch()) {
                 echo "<tr class='odd gradeX'>";
                 echo "<td>" . $row[0] . "</td>
-                      <td>" . $row[1] . "</td>";
+                      <td>" . $row[1] . "</td>
+                      <td>" . $row[2] . "</td>";
                 echo "<td align ='center'>
 							            <a href='#' class='link' onclick=\"_edit(" . $row[0] . ")\">
 								            <i class='fa fa-pencil' style='color:#0066FF;'></i>

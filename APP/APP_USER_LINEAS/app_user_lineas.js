@@ -4,48 +4,10 @@ $(function(){
     showTable();
 });
 
-$('#load').on('submit', function(e) {
-    e.preventDefault();
-    $('#result').hide();
-    $('#loading').show();
-    $.ajax({
-        type: 'POST',
-        url: 'DB/ADD_DB.php',
-        data: new FormData(this),
-        contentType: false,
-        cache: false,
-        processData: false,
-        beforeSend: function () {
-        },
-        success: function (data) {
-            if(data = 1){
-                //document.getElementById('result').innerHTML = " <?php include 'VIEW/_LIST.php';?> ";
-                //$("#result").html(" <?php include 'VIEW/_LIST.php';?> ");
-                $("#result").load('VIEW/LIST.php');
-                document.getElementById('file').value='';
-            }
-            else if(data == 0){
-                alert('Error! Problemas al cargar archivos');
-                document.getElementById('file').value='';
-            }
-            else if(data == 2){
-                alert('Error! Problemas de Comunicaci\u00F3n');
-                document.getElementById('file').value = '';
-            }else{
-                alert('Seleccione un archivo correcto');
-                $('#file').val('');
-            }
-        },
-        complete: function () {
-            $('#loading').hide();
-            $('#result').fadeIn('slow');
-        }
-    });
-});
-
 function showTable(){
     $('#loading').show();
-    $('#result').hide();
+    //$('#result').hide();
+    $('#result').html('');
     $.ajax({
         type: 'GET',
         url: 'VIEW/LIST.php',
@@ -54,20 +16,26 @@ function showTable(){
         },
         complete: function(){
             $('#loading').hide();
-            $('#result').fadeIn('slow');
+            $('#result').show();
+            $('#options').show();
+
         }
     })
 }
 
-
-function _edit(id){
-    $('#formFiles').hide();
-    $('#result').hide();
+function showForms(url, op, params){
+    $('#options').hide();
+    $('#result').html('');
     $('#loading').show();
+    if(op == 1){
+        var data = '';
+    }else{
+        var data = 'cod='+params;
+    }
     $.ajax({
         type: 'POST',
-        url: 'DB/EDIT.php',
-        data: 'id='+id,
+        url: url,
+        data: data,
         success: function(data) {
             $('#result').html(data);
         },
@@ -78,106 +46,94 @@ function _edit(id){
     })
 }
 
-function _delete(id){
-    var si = confirm('Realmente desea eliminar este registro?')
+function _edit(cod){
+    $('#result').hide();
+    $('#loading').show();
+    $.ajax({
+        type: 'POST',
+        url: 'DB/EDIT.php',
+        data: 'cod='+cod,
+        success: function(data) {
+            $('#result').html(data);
+        },
+        complete: function(){
+            $('#loading').hide();
+            $('#result').fadeIn('slow');
+        }
+    })
+}
+
+function _delete(cod){
+    var si = confirm('Realmente desea eliminar esta L\u00EDnea?')
     if (si)    {
-        $('#formFiles').hide();
         $('#result').hide();
         $('#loading').show();
         $.ajax({
             type: 'POST',
             url: 'DB/DELETE_DB.php',
-            data: 'id='+id,
+            data: 'cod='+cod,
             success: function(data) {
                 $('#result').html(data);
             },
             complete: function(){
                 $('#loading').hide();
-                $('#result').fadeIn('slow');
+                $('#result').show();
             }
         })
     }
 }
 
-function cancel(){
-    $('#formFiles').show();
-    showTable();
+function _cancel(){
+    //showTable();
+    location.reload();
 }
 
 function validateFrm(){
     var form = true;
 
-    if (document.getElementById('rut').value == '')
+    if (document.getElementById('cod_linea').value == '')
     {
-        $('#msgRut').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese Rut.</span>");
+        $('#msgCodLinea').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese Cod. L&iacute;nea.</span>");
         form = false;
     }
     else{
-        if(!validaNumeros(document.getElementById('rut').value)){
-            $('#msgRut').fadeIn(1000).html("<span style='color:#FF0000;'>Rut Inv&aacute;lido.</span>");
+        if(1!=1){
+        // if(!validaCodSucursal(document.getElementById('cod_sucursal').value)){
+            $('#msgCodLinea').fadeIn(1000).html("<span style='color:#FF0000;'>Cod. L&iacute; Inv&aacute;lido.</span>");
             form = false;
         }
         else{
-            $('#msgRut').fadeIn(1000).html("&nbsp;");
+            $('#msgCodLinea').fadeIn(1000).html("&nbsp;");
         }
     }
 
-    if (document.getElementById('nombre').value == '')
+    if (document.getElementById('linea').value == '')
     {
-        $('#msgNombre').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese Nombre.</span>");
+        $('#msgLinea').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese L&iacute;nea.</span>");
         form = false;
     }
     else{
-        if(!validaProvedor(document.getElementById('nombre').value)){
-            $('#msgNombre').fadeIn(1000).html("<span style='color:#FF0000;'>Nombre Inv&aacute;lido.</span>");
+        if(!validaAlfanumerico(document.getElementById('linea').value)){
+            $('#msgLinea').fadeIn(1000).html("<span style='color:#FF0000;'>L&iacute; Inv&aacute;lida.</span>");
             form = false;
         }
         else{
-            $('#msgNombre').fadeIn(1000).html("&nbsp;");
+            $('#msgLinea').fadeIn(1000).html("&nbsp;");
         }
     }
 
-    if (document.getElementById('sku').value == '')
+    if (document.getElementById('sucursal').value == 0)
     {
-        $('#msgSku').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese SKU.</span>");
-        form = false;
+        $('#msgSucursal').fadeIn(1000).html("<span style='color:#FF0000;'>Seleccione Sucursal.</span>");
+        form = false
     }
-    else{
-        if(!validaNumeros(document.getElementById('sku').value)){
-            $('#msgSku').fadeIn(1000).html("<span style='color:#FF0000;'>SKU Inv&aacute;lido.</span>");
-            form = false;
-        }
-        else{
-            $('#msgDespacho').fadeIn(1000).html("&nbsp;");
-        }
-    }
-
-    if (document.getElementById('descripcion').value == '')
-    {
-        $('#msgDescripcion').fadeIn(1000).html("<span style='color:#FF0000;'>Ingrese Descripci&oacute;n.</span>");
-        form = false;
-    }
-    else{
-        if(!validaProvedor(document.getElementById('descripcion').value)){
-            $('#msgDescripcion').fadeIn(1000).html("<span style='color:#FF0000;'>Descripci&oacute;n Inv&aacute;lida.</span>");
-            form = false;
-        }
-        else{
-            $('#msgDescripcion').fadeIn(1000).html("&nbsp;");
-        }
-    }
-
-    if (document.getElementById('ranking_ns').value == 0)
-    {
-        $('#msgRanking_ns').fadeIn(1000).html("<span style='color:#FF0000;'>Seleccione Ranking NS.</span>");
-        form = false;
-    }
-    else {
-        $('#msgRanking_ns').fadeIn(1000).html("&nbsp;");
-    }
+    else
+        $('#msgSucursal').fadeIn(1000).html("&nbsp;");
 
     return form;
 }
+
+
 
 
 

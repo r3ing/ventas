@@ -6,7 +6,7 @@ include('../../../MASTER/include/verifyAPP.php');
         <div class="caption blue">
             <i class="icon-settings font-blue-sharp"></i>
             <span class="caption-subject bold font-blue-sharp uppercase">
-                Editar Sucursal
+                Nueva Sucursal
             </span>
         </div>
     </div>

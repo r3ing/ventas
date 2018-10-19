@@ -39,6 +39,9 @@ $descripcion        = $_GET['descripcion'];
             <small>...</small>
         </h3>
         <!-- *********************************************** BEGIN CONTENIDO *********************************************** -->
+        <div id="options">
+            <a onclick="showForms('DB/ADD.php', 1, 0)" class='btn btn-circle btn-default'><i class='icon-plus'></i> Agregar L&iacute;nea</a><br>
+        </div>
         </br>
         <div id="result" hidden>
         </div>
